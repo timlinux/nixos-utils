@@ -93,25 +93,7 @@ EndOfText
 }
 
 welcome() {
-    # Colors and styling
-    CYAN='\033[38;2;83;161;203m'
-    #GREEN='\033[92m'
-    RED='\033[91m'
-    RESET='\033[0m'
-    ORANGE='\033[38;2;237;177;72m'
-    GRAY='\033[90m'
-    # Clear screen and show welcome banner
-    clear
-    echo -e "$RESET$ORANGE"
-    # Kartoza Logo Banner using chafa
     chafa ./img/KartozaNixOS.png --size=30x80 --colors=256 | sed 's/^/                  /'
-    # Quick tips with icons
-    echo -e "$RESET$ORANGE \n__________________________________________________________________\n"
-    echo -e "$RESET$CYAN Kartoza NixOS Utilities Menu\n"
-    echo -e "$RESET$GRAY Tim Sutton\n"
-    echo -e "$RESET$RED 2024,2025\n"
-    echo -e "$RESET$ORANGE \n__________________________________________________________________\n"
-
 }
 
 push_value_to_store() {
@@ -590,7 +572,8 @@ enter_skate_link() {
 main_menu() {
     reset
     clear
-    gum style "🏠️ Kartoza NixOS :: Main Menu"
+    welcome
+    gum style --height 1 --padding "0 0" "🏠️ Kartoza NixOS :: Main Menu"~
     choice=$(
         gum choose \
             "💁🏽 Help" \
@@ -658,7 +641,8 @@ main_menu() {
 setup_menu() {
     reset
     clear
-    gum style "🚀 Kartoza NixOS :: System Menu"
+    welcome
+    gum style --height 1 --padding "0 0" "🚀 Kartoza NixOS :: System Menu"
     choice=$(
         gum choose \
             "🏠️ Main menu" \
@@ -789,7 +773,8 @@ setup_menu() {
 system_menu() {
     reset
     clear
-    gum style "🚀 Kartoza NixOS :: System Menu"
+    welcome
+    gum style --height 1 --padding "0 0" "🚀 Kartoza NixOS :: System Menu"
     choice=$(
         gum choose \
             "🏠️ Main menu" \
@@ -927,7 +912,8 @@ system_menu() {
 system_info_menu() {
     reset
     clear
-    gum style "❓️ Kartoza NixOS :: System Info Menu:"
+    welcome
+    gum style --height 1 --padding "0 0" "❓️ Kartoza NixOS :: System Info Menu:"
     choice=$(
         gum choose \
             "🏠️ Main menu" \
@@ -1054,7 +1040,8 @@ system_info_menu() {
 test_vms_menu() {
     reset
     clear
-    gum style "🖥️ Kartoza NixOS :: Test VMs Menu" "See https://lhf.pt/posts/demystifying-nixos-basic-flake/ For a detailed explanation"
+    welcome
+    gum style --height 1 --padding "0 0" "🖥️ Kartoza NixOS :: Test VMs Menu" "See https://lhf.pt/posts/demystifying-nixos-basic-flake/ For a detailed explanation"
 
     choice=$(
         gum choose \
@@ -1115,7 +1102,8 @@ test_vms_menu() {
 help_menu() {
     reset
     clear
-    gum style "💁🏽 Kartoza NixOS :: Help Menu:"
+    welcome
+    gum style --height 1 --padding "0 0" "💁🏽 Kartoza NixOS :: Help Menu:"
     choice=$(
         gum choose \
             "🏠️ Main menu" \

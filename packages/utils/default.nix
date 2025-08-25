@@ -58,11 +58,7 @@ in
       cp ${desktopItem}/share/applications/* $out/share/applications/
 
       # Install icon (PNG should go in 256x256 directory, not scalable)
-      if [ -f img/icon.png ]; then
-        cp img/icon.png $out/share/icons/hicolor/256x256/apps/nixos-utils.png
-      else
-        echo "Warning: img/icon.png not found, skipping icon installation."
-      fi
+      cp img/icon.png $out/share/icons/hicolor/256x256/apps/nixos-utils.png
 
       # Wrap the script with runtime dependencies
       wrapProgram $out/bin/utils \
