@@ -1,6 +1,5 @@
 # ❄️ NixOS Utils [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-![Screenshot](./img/nixos-utils-demo.gif)
 
 > ## 👋 Welcome to NixOS Utils!
 >
@@ -15,7 +14,6 @@
 >
 > The utilities include system information tools, benchmarking utilities, and management scripts to make working with NixOS more convenient and user-friendly.
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 <!-- TABLE OF CONTENTS -->
 <h2 id="table-of-contents"> 📖 Table of Contents</h2>
@@ -38,7 +36,6 @@
   </ol>
 </details>
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 🚀 Project Overview
 
@@ -50,7 +47,6 @@ NixOS Utils is a comprehensive toolkit designed to simplify NixOS system managem
 - 🎨 **Beautiful TUI Interface**: Powered by Gum for an intuitive terminal user interface
 - 📊 **Distributed Key/Value Store**: Share data across your NixOS systems using Skate
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 🚥 QA Status
 
@@ -67,13 +63,11 @@ NixOS Utils is a comprehensive toolkit designed to simplify NixOS system managem
 
 ![Stars](https://starchart.cc/timlinux/nixos-utils.svg)
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 📜 License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 📂 Folder Structure
 
@@ -93,7 +87,6 @@ nixos-utils/
   └── 💻  vscode.sh         # VSCode setup script with extensions
 ```
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 🔧 Installation and Usage
 
@@ -129,7 +122,6 @@ nix develop
 
 This will provide you with access to all the tools including VSCode, git, gum, and various system utilities.
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 🛠️ Utilities Overview
 
@@ -158,7 +150,6 @@ The main `utils.sh` script provides a comprehensive set of tools organized throu
 - **Markdown rendering**: Read documentation with glow
 - **Git integration**: Repository statistics with onefetch
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 🧊 Using the Nix Shell
 
@@ -190,7 +181,6 @@ The flake includes essential development and system management tools:
 - **Documentation**: Marp for presentations, Glow for markdown
 - **Graphics**: Mesa demos and hardware utilities
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## ✨ Contributing
 
@@ -211,7 +201,6 @@ We welcome contributions! Here's how you can help:
 - Update documentation for new features
 - Ensure backward compatibility when possible
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 🙋 Have Questions?
 
@@ -222,14 +211,12 @@ Have questions or feedback? Feel free to open an issue or submit a Pull Request!
 - 📖 **Documentation**: Help improve our documentation
 - 💬 **Discussions**: Join the conversation about NixOS utilities
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 🧑‍💻👩‍💻 Contributors
 
 - [Tim Sutton](https://github.com/timlinux) – Original author and maintainer
 - [Contributors](https://github.com/timlinux/nixos-utils/graphs/contributors) – See the full list of amazing contributors who have helped make this project possible.
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
 
 ## 📦 Adding to Your Own Flake
 
@@ -313,6 +300,116 @@ nix run github:timlinux/nixos-utils
 
 The utilities will be available system-wide and you can access all the system information tools, benchmarks, and management utilities through the beautiful terminal interface.
 
-![-----------------------------------------------------](https://via.placeholder.com/800x2/36d399/36d399.png)
+
+
+
+## 3. <a name='Quickstart'></a>Quickstart
+
+I have made a lovely menu / terminal app with all the key functionality provided by this flake:
+
+Running the flake directly from github:
+
+```bash
+nix run --extra-experimental-features nix-command --extra-experimental-features flakes github:timlinux/nix-config
+```
+
+Or from a local checkout:
+
+```bash
+nix run .#
+```
+
+* 🏠️ Kartoza NixOS :: Main
+* Choose one:
+* 👉️💁🏽 Help
+  * 🚀 System management
+  * ❓️ System info
+  * 🖥️ Test VMs
+  * 🛼 Create link
+  * 🛼 Enter link
+  * 🛼 Show value for key
+  * 🎬️ Make history video
+  * 💿️ System setup
+  * 💡 About
+  * 🛑 Exit
+
+From here you can perform tasks from the listed sub menus:
+
+### 3.1. <a name='Helpdocumentation'></a>Help documentation
+
+* 👉️🏠️ Main menu
+  * 📃 Documentation (in terminal)
+  * 🌍️ Documentation (in browser)
+
+Provides the documentation you are looking at on this page, either as console text or in your web browser.
+
+Work through the items in sequence...
+
+### 3.2. <a name='Systemmanagement'></a>System management
+
+* 👉️🏠️ Main menu
+  * 🏃🏽 Update system
+  * 🦠 Virus scan your home
+  * 💿️ Backup ZFS to USB disk
+  * 🧹 Clear disk space
+  * 💻️ Update firmware
+  * ❄️ Update flake lock
+  * ⚙️ Start syncthing
+  * 👀 Watch dconf
+  * 🎬️ Mimetypes diff
+
+Provides tools for configuring your system, starting services, setting up your VPN etc.
+
+### 3.3. <a name='Systeminfo'></a>System info
+
+* 👉️🏠️ Main menu
+  * 💻️ Generate your system hardware profile
+  * 🗃️ General system info
+  * 💿️ List disk partitions
+  * 🏃🏽 Generate CPU Benchmark
+  * 🚢 Open ports - nmap
+  * 🚢 Open ports - netstat
+  * 📃 Live system logs
+  * 😺 Git stats
+  * 👨🏽‍🏫 GitHub user info
+  * 🌐 Your ISP and IP
+  * 🐿️ CPU info
+  * 🐏 RAM info
+  * ⭐️ Show me a star constellation
+
+Provides diagnostic and informative information about your system.
+
+### 3.4. <a name='TestVMS'></a>Test VMS
+
+* 👉️🏠️ Main menu
+  * 🏗️ Build Kartoza NixOS ISO
+  * ❄️ Run Kartoza NixOS ISO
+  * 🖥️ Minimal Gnome VM
+  * 🖥️ Full Gnome VM
+  * 🖥️ Minimal KDE-5 VM
+  * 🖥️ Minimal KDE-6 VM
+  * 🖥️ Complete Gnome VM (for screen recording)
+
+Builds and provides test VMs that you can use to try out variants of this flake.
+
+### 3.5. <a name='Systemsetup'></a>System setup
+
+* 👉️🏠️ Main menu
+  * 🛼 Enter link
+  * 🌐 Set up VPN
+  * 🔑 Install Tim's SSH keys
+  * 💿️ Checkout Nix flake
+  * 🏠️ Show your VPN IP address
+  * 🪪 Generate host id
+  * ⚠️ Format disk with ZFS ⚠️
+  * 🖥️ Install system
+
+Tools for setting up a new system from scratch. Assumes an
+admin is available to provide you with VPN connection details
+etc. and to set up your skate link.
+
+### 3.6. <a name='About'></a>About
+
+📽️ Please see the [Video Walkthrough](https://youtu.be/kR54Gbr-ZP0) I made of the Utils menu for more details on the above.
 
 Made with ❤️ and ❄️ by Tim Sutton (@timlinux) and the NixOS community.
