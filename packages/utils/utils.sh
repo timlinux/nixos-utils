@@ -93,29 +93,25 @@ EndOfText
 }
 
 welcome() {
-    set +e
-    read -r -d '\n' LOGO <<EndOfText
-    ------------------------------------------------------------------------------
-             ██╗  ██╗ █████╗ ██████╗ ████████╗ ██████╗ ███████╗ █████╗
-             ██║ ██╔╝██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗╚══███╔╝██╔══██╗
-             █████╔╝ ███████║██████╔╝   ██║   ██║   ██║  ███╔╝ ███████║
-             ██╔═██╗ ██╔══██║██╔══██╗   ██║   ██║   ██║ ███╔╝  ██╔══██║
-             ██║  ██╗██║  ██║██║  ██║   ██║   ╚██████╔╝███████╗██║  ██║
-             ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚══════╝╚═╝  ╚═╝
+    # Colors and styling
+    CYAN='\033[38;2;83;161;203m'
+    #GREEN='\033[92m'
+    RED='\033[91m'
+    RESET='\033[0m'
+    ORANGE='\033[38;2;237;177;72m'
+    GRAY='\033[90m'
+    # Clear screen and show welcome banner
+    clear
+    echo -e "$RESET$ORANGE"
+    # Kartoza Logo Banner using chafa
+    chafa ./img/KartozaNixOS.png --size=30x80 --colors=256 | sed 's/^/                  /'
+    # Quick tips with icons
+    echo -e "$RESET$ORANGE \n__________________________________________________________________\n"
+    echo -e "$RESET$CYAN Kartoza NixOS Utilities Menu\n"
+    echo -e "$RESET$GRAY Tim Sutton\n"
+    echo -e "$RESET$RED 2024,2025\n"
+    echo -e "$RESET$ORANGE \n__________________________________________________________________\n"
 
-                       ███╗   ██╗██╗██╗  ██╗ ██████╗ ███████╗
-                       ████╗  ██║██║╚██╗██╔╝██╔═══██╗██╔════╝
-                       ██╔██╗ ██║██║ ╚███╔╝ ██║   ██║███████╗
-                       ██║╚██╗██║██║ ██╔██╗ ██║   ██║╚════██║
-                       ██║ ╚████║██║██╔╝ ██╗╚██████╔╝███████║
-                       ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-    -----------------------------------------------------------------------------
-EndOfText
-    # Above text generated at https://manytools.org/hacker-tools/ascii-banner/
-    # Using ANSI Shadow font
-    echo ""
-    echo "$LOGO"
-    set -e
 }
 
 push_value_to_store() {
@@ -131,18 +127,18 @@ push_value_to_store() {
     # Parse named parameters
     while [[ $# -gt 0 ]]; do
         case "$1" in
-        -key)
-            key="$2"
-            shift 2
-            ;;
-        -value)
-            value="$2"
-            shift 2
-            ;;
-        *)
-            echo "Unknown option: $1"
-            exit 1
-            ;;
+            -key)
+                key="$2"
+                shift 2
+                ;;
+            -value)
+                value="$2"
+                shift 2
+                ;;
+            *)
+                echo "Unknown option: $1"
+                exit 1
+                ;;
         esac
     done
 
@@ -346,9 +342,9 @@ delete_zfs_snapshots() {
     if [ "$DESTROY" == "CANCEL" ]; then
         echo "❌ Cancelled. No changes made."
         return
-    fi   
+    fi
 
-    echo "🚩 Deletion of old snapshots confirmed..." 
+    echo "🚩 Deletion of old snapshots confirmed..."
     DATE=$(date '+%Y-%m-%d.%Hh-%M')
     echo "📸 Creating new snapshot for current state"
     sudo zfs snapshot NIXROOT/home@"$DATE"-Home
@@ -496,22 +492,20 @@ backup_zfs() {
     echo "📊 Generating backup health report..."
 
     gum style \
-      --border normal \
-      --margin "1 2" \
-      --padding "1 2" \
-      --border-foreground 212 \
-      "🧾 Backup Report Summary" \
-      "• Oldest snapshot: $(zfs list -t snapshot -o name,creation -s creation | grep NIXBACKUPS/home | head -n1)" \
-      "• Snapshots on local: ${LOCAL_COUNT}" \
-      "• Snapshots on backup: $BACKUP_COUNT" \
-      "• Missing snapshots: $MISSING" \
-      "• Free space on local: $(zfs list -H -o available NIXROOT)" \
-      "• Free space on backup: $(zfs list -H -o available NIXBACKUPS)" \
-      "• Last test file restored: $(basename "$RANDOM_FILE")"
+        --border normal \
+        --margin "1 2" \
+        --padding "1 2" \
+        --border-foreground 212 \
+        "🧾 Backup Report Summary" \
+        "• Oldest snapshot: $(zfs list -t snapshot -o name,creation -s creation | grep NIXBACKUPS/home | head -n1)" \
+        "• Snapshots on local: ${LOCAL_COUNT}" \
+        "• Snapshots on backup: $BACKUP_COUNT" \
+        "• Missing snapshots: $MISSING" \
+        "• Free space on local: $(zfs list -H -o available NIXROOT)" \
+        "• Free space on backup: $(zfs list -H -o available NIXBACKUPS)" \
+        "• Last test file restored: $(basename "$RANDOM_FILE")"
 
     duf --only local,network,zfs
-
-
 
     echo "📝 Listing snapshots on backup after pruning:"
     zfs list -t snapshot NIXBACKUPS/home
@@ -594,6 +588,8 @@ enter_skate_link() {
 }
 
 main_menu() {
+    reset
+    clear
     gum style "🏠️ Kartoza NixOS :: Main Menu"
     choice=$(
         gum choose \
@@ -611,55 +607,57 @@ main_menu() {
     )
 
     case $choice in
-    "💁🏽 Help") help_menu ;;
-    "🚀 System management") system_menu ;;
-    "❓️ System info") system_info_menu ;;
-    "🖥️ Test VMs") test_vms_menu ;;
-    "🛼 Create link")
-        gum spin --spinner dot --title "Getting link for the key/value store..." -- sleep 5 &
-        skate link
-        prompt_to_continue
-        main_menu
-        ;;
-    "🛼 Enter link")
-        enter_skate_link
-        prompt_to_continue
-        main_menu
-        ;;
-    "🛼 Show value for key")
-        echo "🛼 Skate key viewer."
-        gum spin --spinner dot --title "Getting key list from the key/value store..." -- sleep 5 &
-        KEYS=$(skate list -k)
-        # We need spaces expanded for this one so disable shellcheck
-        # shellcheck disable=SC2086
-        KEY=$(gum choose "🔑 Enter key name:" ${KEYS})
-        # shellcheck disable=SC2046
-        gum spin --spinner dot --title "Getting value for key: ${KEY} from the key/value store..." -- sleep 5 &
-        skate get "${KEY}"
-        prompt_to_continue
-        main_menu
-        ;;
-    "🎬️ Make history video")
-        echo "🎬️ Making a video of your history."
-        gource --seconds-per-day 0.1 --time-scale 4 --auto-skip-seconds 1 \
-            --key --file-idle-time 0 --max-files 0 --max-file-lag 0.1 \
-            --title "Project History" --bloom-multiplier 0.5 --bloom-intensity 0.5 \
-            --background 000000 --hide filenames,mouse,progress \
-            --output-ppm-stream - |
-            ffmpeg -probesize 50M -analyzeduration 100M -y -r 60 -f image2pipe -vcodec ppm -i - \
-                -vf scale=1280:-1 -vcodec libx264 -preset fast -pix_fmt yuv420p -crf 1 -threads 0 -bf 0 history.mp4
-        ffmpeg -i history.mp4 -vf "fps=10,scale=1280:-1:flags=lanczos" -loop 0 img/history.gif
-        prompt_to_continue
-        main_menu
-        ;;
-    "💿️ System setup") setup_menu ;;
-    "💡 About") about ;;
-    "🛑 Exit") exit 1 ;;
-    *) echo "Invalid choice. Please select again." ;;
+        "💁🏽 Help") help_menu ;;
+        "🚀 System management") system_menu ;;
+        "❓️ System info") system_info_menu ;;
+        "🖥️ Test VMs") test_vms_menu ;;
+        "🛼 Create link")
+            gum spin --spinner dot --title "Getting link for the key/value store..." -- sleep 5 &
+            skate link
+            prompt_to_continue
+            main_menu
+            ;;
+        "🛼 Enter link")
+            enter_skate_link
+            prompt_to_continue
+            main_menu
+            ;;
+        "🛼 Show value for key")
+            echo "🛼 Skate key viewer."
+            gum spin --spinner dot --title "Getting key list from the key/value store..." -- sleep 5 &
+            KEYS=$(skate list -k)
+            # We need spaces expanded for this one so disable shellcheck
+            # shellcheck disable=SC2086
+            KEY=$(gum choose "🔑 Enter key name:" ${KEYS})
+            # shellcheck disable=SC2046
+            gum spin --spinner dot --title "Getting value for key: ${KEY} from the key/value store..." -- sleep 5 &
+            skate get "${KEY}"
+            prompt_to_continue
+            main_menu
+            ;;
+        "🎬️ Make history video")
+            echo "🎬️ Making a video of your history."
+            gource --seconds-per-day 0.1 --time-scale 4 --auto-skip-seconds 1 \
+                --key --file-idle-time 0 --max-files 0 --max-file-lag 0.1 \
+                --title "Project History" --bloom-multiplier 0.5 --bloom-intensity 0.5 \
+                --background 000000 --hide filenames,mouse,progress \
+                --output-ppm-stream - \
+                | ffmpeg -probesize 50M -analyzeduration 100M -y -r 60 -f image2pipe -vcodec ppm -i - \
+                    -vf scale=1280:-1 -vcodec libx264 -preset fast -pix_fmt yuv420p -crf 1 -threads 0 -bf 0 history.mp4
+            ffmpeg -i history.mp4 -vf "fps=10,scale=1280:-1:flags=lanczos" -loop 0 img/history.gif
+            prompt_to_continue
+            main_menu
+            ;;
+        "💿️ System setup") setup_menu ;;
+        "💡 About") about ;;
+        "🛑 Exit") exit 1 ;;
+        *) echo "Invalid choice. Please select again." ;;
     esac
 }
 
 setup_menu() {
+    reset
+    clear
     gum style "🚀 Kartoza NixOS :: System Menu"
     choice=$(
         gum choose \
@@ -677,68 +675,68 @@ setup_menu() {
     )
 
     case $choice in
-    "🛼 Enter link")
-        # This connects the end user device to our
-        # distributed key/value store
-        # that lets me push content to their machine easily
-        # (like their vpn credentials)
-        # See also 'create link' from the main menu
-        enter_skate_link
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🌐 Set up VPN")
-        NEW_HOSTNAME=$(gum input --prompt "What is hostname for this new machine?: " --placeholder "ROCK")
-        gum style "VPN Setup" "Before you run this, your admin needs to save the key in ${NEW_HOSTNAME}-wireguard. When this is done, press any key to continue."
-        prompt_to_continue
-        sudo hostname "${NEW_HOSTNAME}"
-        # check if dir exists, if not, create it
-        [ -d ~/.wireguard/ ] || mkdir ~/.wireguard/
-        # check if the file exists, if not, create it
-        [ -f ~/.wireguard/kartoza-vpn.conf ] || skate get "${NEW_HOSTNAME}-wireguard" >~/.wireguard/kartoza-vpn.conf
-        nmcli connection import type wireguard file ~/.wireguard/kartoza-vpn.conf
-        nmcli connection up wg0
-        nmcli connection show
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🔑 Install Tim's SSH keys")
-        [ -d ~/.ssh/ ] || mkdir ~/.ssh
-        curl https://github.com/timlinux.keys >~/.ssh/authorized_keys
-        prompt_to_continue
-        setup_menu
-        ;;
-    "💿️ Checkout Nix flake")
-        # This should usually not be needed during initial setup
-        # since we run the flake remotely. But after the system is installed
-        # or if we want to tweak things during setup, having this
-        # flake checked out can be handy...
-        cd ~
-        [ -d ~/dev/ ] || mkdir ~/dev
-        [ -d ~/dev/nix-config/ ] || git clone https://github.com/timlinux/nix-config.git ~/dev/nix-config
-        cd ~/dev/nix-config/
-        git pull
-        cd ~
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🏠️ Show your VPN IP address")
-        ip addr
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🪪 Generate host id")
-        echo "Your unique host ID is:"
-        head -c 8 /etc/machine-id
-        skate set "$(hostname)-machine-id" "$(head -c 8 /etc/machine-id)"
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🛟 Rescue System")
-        echo "Make sure you are booted off the live CD"
-        echo "Here are the commands to run to rebuild your system."
-        echo "Modify as needed..."
-        echo """
+        "🛼 Enter link")
+            # This connects the end user device to our
+            # distributed key/value store
+            # that lets me push content to their machine easily
+            # (like their vpn credentials)
+            # See also 'create link' from the main menu
+            enter_skate_link
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🌐 Set up VPN")
+            NEW_HOSTNAME=$(gum input --prompt "What is hostname for this new machine?: " --placeholder "ROCK")
+            gum style "VPN Setup" "Before you run this, your admin needs to save the key in ${NEW_HOSTNAME}-wireguard. When this is done, press any key to continue."
+            prompt_to_continue
+            sudo hostname "${NEW_HOSTNAME}"
+            # check if dir exists, if not, create it
+            [ -d ~/.wireguard/ ] || mkdir ~/.wireguard/
+            # check if the file exists, if not, create it
+            [ -f ~/.wireguard/kartoza-vpn.conf ] || skate get "${NEW_HOSTNAME}-wireguard" >~/.wireguard/kartoza-vpn.conf
+            nmcli connection import type wireguard file ~/.wireguard/kartoza-vpn.conf
+            nmcli connection up wg0
+            nmcli connection show
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🔑 Install Tim's SSH keys")
+            [ -d ~/.ssh/ ] || mkdir ~/.ssh
+            curl https://github.com/timlinux.keys >~/.ssh/authorized_keys
+            prompt_to_continue
+            setup_menu
+            ;;
+        "💿️ Checkout Nix flake")
+            # This should usually not be needed during initial setup
+            # since we run the flake remotely. But after the system is installed
+            # or if we want to tweak things during setup, having this
+            # flake checked out can be handy...
+            cd ~
+            [ -d ~/dev/ ] || mkdir ~/dev
+            [ -d ~/dev/nix-config/ ] || git clone https://github.com/timlinux/nix-config.git ~/dev/nix-config
+            cd ~/dev/nix-config/
+            git pull
+            cd ~
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🏠️ Show your VPN IP address")
+            ip addr
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🪪 Generate host id")
+            echo "Your unique host ID is:"
+            head -c 8 /etc/machine-id
+            skate set "$(hostname)-machine-id" "$(head -c 8 /etc/machine-id)"
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🛟 Rescue System")
+            echo "Make sure you are booted off the live CD"
+            echo "Here are the commands to run to rebuild your system."
+            echo "Modify as needed..."
+            echo """
         sudo zpool import -f NIXROOT
         sudo zfs load-key NIXROOT
         sudo mkdir /mnt/boot
@@ -753,42 +751,44 @@ setup_menu() {
         unset SUDO_USER
         NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --show-trace --impure --option sandbox false --flake .#crest
         """
-        prompt_to_continue
-        setup_menu
-        ;;
-    "⚠️ Format disk with ZFS ⚠️")
-        confirm_format
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🖥️ Install system")
-        gum style --foreground red "You are about to fully replace the operating system on this host!"
-        NEW_HOSTNAME=$(gum input --prompt "Confirm the hostname for this new machine?: " --placeholder "$(hostname)")
-        sudo hostname "${NEW_HOSTNAME}"
-        echo "Are you sure you want to install with the flake profile for $NEW_HOSTNAME?"
-        FLAKE=$(gum choose "YES" "NO")
-        if [ "$FLAKE" == "YES" ]; then
-            sudo nixos-install --option eval-cache false --flake /mnt/etc/nixos#"${NEW_HOSTNAME}"
-        fi
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🗑️ Purge nix cache")
-        # Untested, needs checking
-        rm -rf ~/.cache/nix/*
-        sudo rm -rf ~/.cache/nix/*
-        prompt_to_continue
-        setup_menu
-        ;;
-    "🏠️ Main menu")
-        clear
-        main_menu
-        ;;
-    *) echo "🛑 Invalid choice. Please select again." ;;
+            prompt_to_continue
+            setup_menu
+            ;;
+        "⚠️ Format disk with ZFS ⚠️")
+            confirm_format
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🖥️ Install system")
+            gum style --foreground red "You are about to fully replace the operating system on this host!"
+            NEW_HOSTNAME=$(gum input --prompt "Confirm the hostname for this new machine?: " --placeholder "$(hostname)")
+            sudo hostname "${NEW_HOSTNAME}"
+            echo "Are you sure you want to install with the flake profile for $NEW_HOSTNAME?"
+            FLAKE=$(gum choose "YES" "NO")
+            if [ "$FLAKE" == "YES" ]; then
+                sudo nixos-install --option eval-cache false --flake /mnt/etc/nixos#"${NEW_HOSTNAME}"
+            fi
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🗑️ Purge nix cache")
+            # Untested, needs checking
+            rm -rf ~/.cache/nix/*
+            sudo rm -rf ~/.cache/nix/*
+            prompt_to_continue
+            setup_menu
+            ;;
+        "🏠️ Main menu")
+            clear
+            main_menu
+            ;;
+        *) echo "🛑 Invalid choice. Please select again." ;;
     esac
 }
 
 system_menu() {
+    reset
+    clear
     gum style "🚀 Kartoza NixOS :: System Menu"
     choice=$(
         gum choose \
@@ -813,119 +813,120 @@ system_menu() {
     )
 
     case $choice in
-    "Help") help_menu ;;
-    "🏃 Update system")
-        sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nix build --impure
-        # Don't exit on errors
-        set +e
-        ntfy_message "Running nixos-rebuild switch"
-        sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild test --show-trace --impure --flake .
-        sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --show-trace --impure --flake .
-        ntfy_message "System updated"
-        # Re-enable exit on errors
-        set -e
-        prompt_to_continue
-        system_menu
-        ;;
-    "📃 List generations")
-        list_generations
-        prompt_to_continue
-        system_menu
-        ;;
-    "🦠 Virus scan your home")
-        clamscan -i /home/"$(whoami)"
-        prompt_to_continue
-        system_menu
-        ;;
-    "💿️ Backup ZFS to USB disk")
-        backup_zfs
-        prompt_to_continue
-        system_menu
-        ;;
-    "💿️ FORCE Backup ZFS to USB disk")
-        force_backup_zfs
-        prompt_to_continue
-        system_menu
-        ;;
-    "💿️ Unmount ZFS USB disk")
-        unmount_backup_disk
-        prompt_to_continue
-        system_menu
-        ;;
-    "🔑 Change ZFS Passphrase for NIXROOT")
-        change_zfs_passphrase
-        prompt_to_continue
-        system_menu
-        ;;
-    "🧹 Clear disk space")
-        sudo nix-collect-garbage -d
-        prompt_to_continue
-        system_menu
-        ;;
-    "🧹 Delete ZFS Snapshots")
-        delete_zfs_snapshots
-        prompt_to_continue
-        system_menu
-        ;;
-    "📺️ List video cards")
-        lspci | grep VGA
-        prompt_to_continue
-        system_menu
-        ;;
-    "⚙️ Glx Gears - Integrated")
-        vblank_mode=0 glxgears
-        prompt_to_continue
-        system_menu
-        ;;
-    "⚙️ Glx Gears - Nvidia")
-        __NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only __GL_SYNC_TO_VBLANK=0 glxgears
-        prompt_to_continue
-        system_menu
-        ;;        
-    "💻️ Update firmware")
-        echo "Framework users please see:"
-        echo "https://djacu.dev/posts/update-framework-bios-on-nixos/"
-        sudo fwupdmgr enable-remote lvfs-testing
-        sudo fwupdmgr refresh --force
-        sudo fwupdmgr get-updates
-        sudo fwupdmgr update
-        prompt_to_continue
-        system_menu
-        ;;
-    "❄️ Update flake lock")
-        gum style "Flake update" "Running flake update to update the lock file."
-        nix flake update
-        prompt_to_continue
-        system_menu
-        ;;
-    "⚙️ Start syncthing")
-        start_syncthing
-        prompt_to_continue
-        system_menu
-        ;;
-    "👀 Watch dconf")
-        # See here for a way to cat and digg dconf
-        # https://heywoodlh.io/nixos-gnome-settings-and-keyboard-shortcuts
-        # dconf dump / > old-conf.txt
-        # dconf dump / > new-conf.txt
-        # diff old-conf.txt new-conf.txt
-        echo "Click around in gnome settings etc. to see what changes. Then propogate those changes to your nix configs."
-        dconf watch /
-        ;;
-    "🎬️ Mimetypes diff")
-        echo "Use the file manager to open different file types, then see the diff here to add them to home/xdg/default.nix to make these the default for all users."
-        echo "TODO: ls -lah ~/.config/mimeapps.list"
-        ;;
-    "🏠️ Main menu")
-        clear
-        main_menu
-        ;;
-    *) echo "🛑 Invalid choice. Please select again." ;;
+        "Help") help_menu ;;
+        "🏃 Update system")
+            sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nix build --impure
+            # Don't exit on errors
+            set +e
+            ntfy_message "Running nixos-rebuild switch"
+            sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild test --show-trace --impure --flake .
+            sudo NIXPKGS_ALLOW_INSECURE=1 NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --show-trace --impure --flake .
+            ntfy_message "System updated"
+            # Re-enable exit on errors
+            set -e
+            prompt_to_continue
+            system_menu
+            ;;
+        "📃 List generations")
+            list_generations
+            prompt_to_continue
+            system_menu
+            ;;
+        "🦠 Virus scan your home")
+            clamscan -i /home/"$(whoami)"
+            prompt_to_continue
+            system_menu
+            ;;
+        "💿️ Backup ZFS to USB disk")
+            backup_zfs
+            prompt_to_continue
+            system_menu
+            ;;
+        "💿️ FORCE Backup ZFS to USB disk")
+            force_backup_zfs
+            prompt_to_continue
+            system_menu
+            ;;
+        "💿️ Unmount ZFS USB disk")
+            unmount_backup_disk
+            prompt_to_continue
+            system_menu
+            ;;
+        "🔑 Change ZFS Passphrase for NIXROOT")
+            change_zfs_passphrase
+            prompt_to_continue
+            system_menu
+            ;;
+        "🧹 Clear disk space")
+            sudo nix-collect-garbage -d
+            prompt_to_continue
+            system_menu
+            ;;
+        "🧹 Delete ZFS Snapshots")
+            delete_zfs_snapshots
+            prompt_to_continue
+            system_menu
+            ;;
+        "📺️ List video cards")
+            lspci | grep VGA
+            prompt_to_continue
+            system_menu
+            ;;
+        "⚙️ Glx Gears - Integrated")
+            vblank_mode=0 glxgears
+            prompt_to_continue
+            system_menu
+            ;;
+        "⚙️ Glx Gears - Nvidia")
+            __NV_PRIME_RENDER_OFFLOAD=1 __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only __GL_SYNC_TO_VBLANK=0 glxgears
+            prompt_to_continue
+            system_menu
+            ;;
+        "💻️ Update firmware")
+            echo "Framework users please see:"
+            echo "https://djacu.dev/posts/update-framework-bios-on-nixos/"
+            sudo fwupdmgr enable-remote lvfs-testing
+            sudo fwupdmgr refresh --force
+            sudo fwupdmgr get-updates
+            sudo fwupdmgr update
+            prompt_to_continue
+            system_menu
+            ;;
+        "❄️ Update flake lock")
+            gum style "Flake update" "Running flake update to update the lock file."
+            nix flake update
+            prompt_to_continue
+            system_menu
+            ;;
+        "⚙️ Start syncthing")
+            start_syncthing
+            prompt_to_continue
+            system_menu
+            ;;
+        "👀 Watch dconf")
+            # See here for a way to cat and digg dconf
+            # https://heywoodlh.io/nixos-gnome-settings-and-keyboard-shortcuts
+            # dconf dump / > old-conf.txt
+            # dconf dump / > new-conf.txt
+            # diff old-conf.txt new-conf.txt
+            echo "Click around in gnome settings etc. to see what changes. Then propogate those changes to your nix configs."
+            dconf watch /
+            ;;
+        "🎬️ Mimetypes diff")
+            echo "Use the file manager to open different file types, then see the diff here to add them to home/xdg/default.nix to make these the default for all users."
+            echo "TODO: ls -lah ~/.config/mimeapps.list"
+            ;;
+        "🏠️ Main menu")
+            clear
+            main_menu
+            ;;
+        *) echo "🛑 Invalid choice. Please select again." ;;
     esac
 }
 
 system_info_menu() {
-
+    reset
+    clear
     gum style "❓️ Kartoza NixOS :: System Info Menu:"
     choice=$(
         gum choose \
@@ -950,107 +951,109 @@ system_info_menu() {
     )
 
     case $choice in
-    "💻️ Generate your system hardware profile")
-        generate_hardware_profile
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🗃️ General system info")
-        fastfetch
-        push_value_to_store -key "fastfetch" -value "$(fastfetch)"
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "💿️ List disk partitions")
-        list_partitions
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🏃🏽 Generate CPU Benchmark")
-        CPU_COUNT=$(lscpu | grep '^CPU(s):' | grep -o "[0-9]*")
-        sysbench --threads="${CPU_COUNT}" cpu run
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🚢 Open ports - nmap")
-        nmap localhost
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🚢 Open ports - netstat")
-        list_open_ports
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🔍️ Scan local network 10.")
-        nmap -sn 10.100.0.0/24
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🔍️ Scan local network 192.168.1")
-        nmap -sn 192.168.1.0/24
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🔍️ Scan local network 192.168.0")
-        nmap -sn 192.168.0.0/24
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "👨🏽‍🍳 Running Services")
-        SERVICES=$(systemctl list-units --type=service --all)
-        echo -e "${SERVICES}"
-        push_value_to_store -key "systemd" -value "${SERVICES}"
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "📃 Live system logs")
-        journalctl --user -f
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "😺 Git stats")
-        onefetch
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "👨🏽‍🏫 GitHub user info")
-        octofetch timlinux
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🌐 Your ISP and IP")
-        ipfetch
-        ip addr | grep "inet "
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🐿️ CPU info")
-        cpufetch
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🐏 RAM info")
-        ramfetch
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "⭐️ Show me a star constellation")
-        starfetch
-        prompt_to_continue
-        system_info_menu
-        ;;
-    "🏠️ Main menu")
-        clear
-        main_menu
-        ;;
-    *) echo "Invalid choice. Please select again." ;;
+        "💻️ Generate your system hardware profile")
+            generate_hardware_profile
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🗃️ General system info")
+            fastfetch
+            push_value_to_store -key "fastfetch" -value "$(fastfetch)"
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "💿️ List disk partitions")
+            list_partitions
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🏃🏽 Generate CPU Benchmark")
+            CPU_COUNT=$(lscpu | grep '^CPU(s):' | grep -o "[0-9]*")
+            sysbench --threads="${CPU_COUNT}" cpu run
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🚢 Open ports - nmap")
+            nmap localhost
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🚢 Open ports - netstat")
+            list_open_ports
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🔍️ Scan local network 10.")
+            nmap -sn 10.100.0.0/24
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🔍️ Scan local network 192.168.1")
+            nmap -sn 192.168.1.0/24
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🔍️ Scan local network 192.168.0")
+            nmap -sn 192.168.0.0/24
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "👨🏽‍🍳 Running Services")
+            SERVICES=$(systemctl list-units --type=service --all)
+            echo -e "${SERVICES}"
+            push_value_to_store -key "systemd" -value "${SERVICES}"
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "📃 Live system logs")
+            journalctl --user -f
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "😺 Git stats")
+            onefetch
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "👨🏽‍🏫 GitHub user info")
+            octofetch timlinux
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🌐 Your ISP and IP")
+            ipfetch
+            ip addr | grep "inet "
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🐿️ CPU info")
+            cpufetch
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🐏 RAM info")
+            ramfetch
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "⭐️ Show me a star constellation")
+            starfetch
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🏠️ Main menu")
+            clear
+            main_menu
+            ;;
+        *) echo "Invalid choice. Please select again." ;;
 
     esac
 
 }
 
 test_vms_menu() {
+    reset
+    clear
     gum style "🖥️ Kartoza NixOS :: Test VMs Menu" "See https://lhf.pt/posts/demystifying-nixos-basic-flake/ For a detailed explanation"
 
     choice=$(
@@ -1066,50 +1069,52 @@ test_vms_menu() {
     )
 
     case $choice in
-    "🏗️ Build Kartoza NixOS ISO")
-        clear
-        nix build .#nixosConfigurations.live.config.system.build.isoImage
-        qemu-system-x86_64 -m 2048M -cdrom result/iso/*.iso
-        main_menu
-        ;;
-    "❄️ Run Kartoza NixOS ISO")
-        clear
-        nix-shell -p qemu --command "qemu-system-x86_64 -enable-kvm -m 4096 -cdrom result/iso/nixos-*.iso"
-        main_menu
-        ;;
-    "🖥️ Minimal Gnome VM")
-        clear
-        run_minimal_gnome_test_vm
-        main_menu
-        ;;
-    "🖥️ Full Gnome VM")
-        clear
-        run_full_gnome_test_vm
-        main_menu
-        ;;
-    "🖥️ Minimal KDE-5 VM")
-        clear
-        run_kde5_test_vm
-        main_menu
-        ;;
-    "🖥️ Minimal KDE-6 VM")
-        clear
-        run_kde6_test_vm
-        main_menu
-        ;;
-    "🖥️ Complete Gnome VM (for screen recording)")
-        clear
-        main_menu
-        ;;
-    "🏠️ Main menu")
-        clear
-        main_menu
-        ;;
-    *) echo "🛑 Invalid choice. Please select again." ;;
+        "🏗️ Build Kartoza NixOS ISO")
+            clear
+            nix build .#nixosConfigurations.live.config.system.build.isoImage
+            qemu-system-x86_64 -m 2048M -cdrom result/iso/*.iso
+            main_menu
+            ;;
+        "❄️ Run Kartoza NixOS ISO")
+            clear
+            nix-shell -p qemu --command "qemu-system-x86_64 -enable-kvm -m 4096 -cdrom result/iso/nixos-*.iso"
+            main_menu
+            ;;
+        "🖥️ Minimal Gnome VM")
+            clear
+            run_minimal_gnome_test_vm
+            main_menu
+            ;;
+        "🖥️ Full Gnome VM")
+            clear
+            run_full_gnome_test_vm
+            main_menu
+            ;;
+        "🖥️ Minimal KDE-5 VM")
+            clear
+            run_kde5_test_vm
+            main_menu
+            ;;
+        "🖥️ Minimal KDE-6 VM")
+            clear
+            run_kde6_test_vm
+            main_menu
+            ;;
+        "🖥️ Complete Gnome VM (for screen recording)")
+            clear
+            main_menu
+            ;;
+        "🏠️ Main menu")
+            clear
+            main_menu
+            ;;
+        *) echo "🛑 Invalid choice. Please select again." ;;
     esac
 }
 
 help_menu() {
+    reset
+    clear
     gum style "💁🏽 Kartoza NixOS :: Help Menu:"
     choice=$(
         gum choose \
@@ -1119,19 +1124,19 @@ help_menu() {
     )
 
     case $choice in
-    "📃 Documentation (in terminal)")
-        glow -p -s dark https://raw.githubusercontent.com/timlinux/nix-config/main/README.md
-        help_menu
-        ;;
-    "🌍️ Documentation (in browser)")
-        xdg-open https://github.com/timlinux/nix-config/blob/main/README.md
-        help_menu
-        ;;
-    "🏠️ Main menu")
-        clear
-        main_menu
-        ;;
-    *) echo "🛑 Invalid choice. Please select again." ;;
+        "📃 Documentation (in terminal)")
+            glow -p -s dark https://raw.githubusercontent.com/timlinux/nix-config/main/README.md
+            help_menu
+            ;;
+        "🌍️ Documentation (in browser)")
+            xdg-open https://github.com/timlinux/nix-config/blob/main/README.md
+            help_menu
+            ;;
+        "🏠️ Main menu")
+            clear
+            main_menu
+            ;;
+        *) echo "🛑 Invalid choice. Please select again." ;;
     esac
 }
 
