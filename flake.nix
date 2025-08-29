@@ -41,12 +41,13 @@
     # { pkgs, ... }: {
     #   nixpkgs.overlays = [(import ../../packages)];
     #   environment.systemPackages = with pkgs; [
-    #     qgis
+    #     utils
     #   ];
     # }
 
-    packages.x86_64-linux = {
-      default = pkgs.callPackage ./packages/utils {};
+    packages = rec {  # recursive to default alias can refer to utils
+      utils = pkgs.callPackage ./packages/utils {};
+      default = utils;
     };
 
     ######################################################
