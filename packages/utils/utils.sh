@@ -341,6 +341,31 @@ delete_zfs_snapshots() {
     echo "🗑️ Old snapshots deleted and replaced with bookmarks"
 }
 
+prepare_backup_device() {
+    DEVICE=$(gum input --prompt "Enter the device path to use for backup (e.g. /dev/sda): " --placeholder "/dev/sda")
+    gum style "⚠️ WARNING" "You are about to erase all data on $DEVICE. This action is irreversible!"
+    CONFIRM1=$(gum choose "ERASE" "CANCEL")
+    if [ "$CONFIRM1" != "ERASE" ]; then
+        echo "❌ Cancelled. No changes made."
+        return
+    fi
+    gum style "⚠️ FINAL WARNING" "Are you absolutely sure you want to erase $DEVICE and create a new encrypted ZFS pool?"
+    CONFIRM2=$(gum choose "YES" "NO")
+    if [ "$CONFIRM2" != "YES" ]; then
+        echo "❌ Cancelled. No changes made."
+        return
+    fi
+    sudo zpool create \
+        -O encryption=aes-256-gcm \
+        -O keyformat=passphrase \
+        -O keylocation=prompt \
+        -O compression=zstd \
+        -O atime=off \
+        NIXBACKUPS \
+        "$DEVICE"
+    echo "✅ Backup device $DEVICE prepared as encrypted ZFS pool NIXBACKUPS."
+}
+
 force_backup_zfs() {
     # This function is used to force a backup of the ZFS filesystem
     # It will delete any previous snapshots on the backup device
@@ -782,6 +807,7 @@ system_menu() {
             "📃 List generations" \
             "🦠 Virus scan your home" \
             "🔑 Change ZFS Passphrase for NIXROOT" \
+            "💿️ Prepare USB disk for use as backup drive" \
             "💿️ Backup ZFS to USB disk" \
             "💿️ FORCE Backup ZFS to USB disk" \
             "💿️ Unmount ZFS USB disk" \
@@ -819,6 +845,11 @@ system_menu() {
             ;;
         "🦠 Virus scan your home")
             clamscan -i /home/"$(whoami)"
+            prompt_to_continue
+            system_menu
+            ;;
+        "💿️ Prepare USB disk for use as backup drive")
+            prepare_backup_device
             prompt_to_continue
             system_menu
             ;;
