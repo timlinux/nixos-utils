@@ -45,9 +45,21 @@
     #   ];
     # }
 
-    packages = rec {  # recursive to default alias can refer to utils
+    packages.x86_64-linux = rec {
+      # recursive to default alias can refer to utils
       utils = pkgs.callPackage ./packages/utils {};
       default = utils;
+    };
+
+    ######################################################
+    ##
+    ## Apps - Define what happens when you run "nix run"
+    ##
+    ######################################################
+
+    apps.x86_64-linux.default = {
+      type = "app";
+      program = "${self.packages.x86_64-linux.utils}/bin/utils";
     };
 
     ######################################################
@@ -79,6 +91,7 @@
         mesa-demos
         pciutils
         fwupd
+        netdiscover
       ];
 
       shellHook = ''

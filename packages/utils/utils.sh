@@ -926,7 +926,8 @@ system_info_menu() {
             "🔍️ Scan local network 10." \
             "🔍️ Scan local network 192.168.1" \
             "🔍️ Scan local network 192.168.0" \
-            "👨🏽‍🍳 Running Services" \
+            "🔍️ Discover network devices with netdiscover" \
+            "🔍️ Running Services" \
             "📃 Live system logs" \
             "😺 Git stats" \
             "👨🏽‍🏫 GitHub user info" \
@@ -984,7 +985,14 @@ system_info_menu() {
             prompt_to_continue
             system_info_menu
             ;;
-        "👨🏽‍🍳 Running Services")
+        "🔍️ Discover network devices with netdiscover")
+            echo "🕵️ Running netdiscover to discover devices on local network..."
+            echo "This will run for 30 seconds and show active devices."
+            sudo netdiscover
+            prompt_to_continue
+            system_info_menu
+            ;;
+        "🔍️ Running Services")
             SERVICES=$(systemctl list-units --type=service --all)
             echo -e "${SERVICES}"
             push_value_to_store -key "systemd" -value "${SERVICES}"
