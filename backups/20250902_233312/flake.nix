@@ -1,5 +1,5 @@
 {
-  description = "nixos-utils";
+  description = "[PACKAGE NAME]";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -29,8 +29,8 @@
     {
       packages.x86_64-linux = rec {
         # recursive so default alias can refer to the package name
-        nixos-utils = pkgs.callPackage ./packages/nixos-utils { };
-        default = nixos-utils;
+        [PACKAGE NAME] = pkgs.callPackage ./packages/[PACKAGE NAME] { };
+        default = [PACKAGE NAME];
       };
 
       ######################################################

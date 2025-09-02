@@ -5,13 +5,13 @@ Kartoza computer and managing the services running on it.
 
 You can run it by doing either:
 
-```
+```bash
 nix run .#utils
 ```
 
 Or using the flake as a remote repo:
 
-```
+```bash
 nix run github:timlinux/nix-config#utils
 ```
 

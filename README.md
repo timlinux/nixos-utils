@@ -1,19 +1,17 @@
 # ❄️ NixOS Utils [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+![Logo](./img/KartozaNixOS.png)
 
-> ## 👋 Welcome to NixOS Utils!
->
-> **This repository hosts a collection of utilities for managing NixOS systems:**  
-> 🔧 **Bash script that provides a user-friendly interface for various NixOS management tasks**
->
-> Here you'll find everything you need to **build, install, and use** these NixOS utilities.
->
-> ### ⚠️ About this Project
->
-> **This repository provides utilities to help you manage and set up your NixOS system.**
->
-> The utilities include system information tools, benchmarking utilities, and management scripts to make working with NixOS more convenient and user-friendly.
+## 👋 Welcome to NixOS Utils
 
+This repository hosts a collection of utilities for managing NixOS systems:
+
+* 🔧Bash script that provides a user-friendly interface for various NixOS management tasks**
+* The utilities include system information tools, benchmarking utilities, and
+management scripts to make working with NixOS more convenient and
+user-friendly.
+
+Here you'll find everything you need to **build, install, and use** these NixOS utilities.
 
 <!-- TABLE OF CONTENTS -->
 <h2 id="table-of-contents"> 📖 Table of Contents</h2>
@@ -36,38 +34,35 @@
   </ol>
 </details>
 
-
 ## 🚀 Project Overview
 
 NixOS Utils is a comprehensive toolkit designed to simplify NixOS system management and provide useful utilities for both new and experienced NixOS users. The project includes:
 
-- 🖥️ **System Information Tools**: Display comprehensive system stats including CPU, RAM, network, and more
-- 🏃‍♂️ **Benchmarking Utilities**: Test your system performance with built-in benchmarking tools
-- 🔧 **Management Scripts**: Streamlined tools for common NixOS administrative tasks
-- 🎨 **Beautiful TUI Interface**: Powered by Gum for an intuitive terminal user interface
-- 📊 **Distributed Key/Value Store**: Share data across your NixOS systems using Skate
-
+* 🖥️ **System Information Tools**: Display comprehensive system stats including CPU, RAM, network, and more
+* 🏃‍♂️ **Benchmarking Utilities**: Test your system performance with built-in benchmarking tools
+* 🔧 **Management Scripts**: Streamlined tools for common NixOS administrative tasks
+* 🎨 **Beautiful TUI Interface**: Powered by Gum for an intuitive terminal user interface
+* 📊 **Distributed Key/Value Store**: Share data across your NixOS systems using Skate
 
 ## 🚥 QA Status
 
 ### 🪪 Badges
+
 | Badge | Description |
 |-------|-------------|
 | ![License](https://img.shields.io/github/license/timlinux/nixos-utils.svg) | Repository license |
-| ![](https://img.shields.io/github/issues/timlinux/nixos-utils.svg) | Open issues count |
-| ![](https://img.shields.io/github/issues-closed/timlinux/nixos-utils.svg) | Closed issues count |
-| ![](https://img.shields.io/github/issues-pr/timlinux/nixos-utils.svg) | Open pull requests count |
-| ![](https://img.shields.io/github/issues-pr-closed/timlinux/nixos-utils.svg) | Closed pull requests count |
+| ![Open Issues](https://img.shields.io/github/issues/timlinux/nixos-utils.svg) | Open issues count |
+| ![Closed Issues](https://img.shields.io/github/issues-closed/timlinux/nixos-utils.svg) | Closed issues count |
+| ![Open PRs](https://img.shields.io/github/issues-pr/timlinux/nixos-utils.svg) | Open pull requests count |
+| ![Closed PRs](https://img.shields.io/github/issues-pr-closed/timlinux/nixos-utils.svg) | Closed pull requests count |
 
 ### ⭐️ Project Stars
 
 ![Stars](https://starchart.cc/timlinux/nixos-utils.svg)
 
-
 ## 📜 License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
 
 ## 📂 Folder Structure
 
@@ -86,7 +81,6 @@ nixos-utils/
   ├── 📝  vscode.log        # VSCode configuration log
   └── 💻  vscode.sh         # VSCode setup script with extensions
 ```
-
 
 ## 🔧 Installation and Usage
 
@@ -122,34 +116,36 @@ nix develop
 
 This will provide you with access to all the tools including VSCode, git, gum, and various system utilities.
 
-
 ## 🛠️ Utilities Overview
 
 The main `utils.sh` script provides a comprehensive set of tools organized through an intuitive menu system:
 
 ### 📊 System Information Tools
-- **neofetch**: Display beautiful system information
-- **fastfetch**: Quick system stats summary  
-- **cpufetch**: Detailed CPU information
-- **ramfetch**: Memory information and usage
-- **ipfetch**: Network and ISP information
-- **octofetch**: GitHub user information lookup
+
+* **neofetch**: Display beautiful system information
+* **fastfetch**: Quick system stats summary
+* **cpufetch**: Detailed CPU information
+* **ramfetch**: Memory information and usage
+* **ipfetch**: Network and ISP information
+* **octofetch**: GitHub user information lookup
 
 ### 🏃‍♂️ Performance Tools
-- **sysbench**: CPU benchmarking utility
-- **System monitoring**: Real-time performance metrics
+
+* **sysbench**: CPU benchmarking utility
+* **System monitoring**: Real-time performance metrics
 
 ### 🔧 Management Utilities
-- **Skate integration**: Distributed key/value store for sharing data across systems
-- **Notification system**: Send alerts to mobile devices via ntfy-sh
-- **Screenshot tools**: Command-line screenshot capabilities with scrot
-- **Network tools**: Network scanning and analysis with nmap
+
+* **Skate integration**: Distributed key/value store for sharing data across systems
+* **Notification system**: Send alerts to mobile devices via ntfy-sh
+* **Screenshot tools**: Command-line screenshot capabilities with scrot
+* **Network tools**: Network scanning and analysis with nmap
 
 ### 🎨 User Interface
-- **Gum-powered TUI**: Beautiful terminal user interface
-- **Markdown rendering**: Read documentation with glow
-- **Git integration**: Repository statistics with onefetch
 
+* **Gum-powered TUI**: Beautiful terminal user interface
+* **Markdown rendering**: Read documentation with glow
+* **Git integration**: Repository statistics with onefetch
 
 ## 🧊 Using the Nix Shell
 
@@ -163,7 +159,7 @@ nix develop
 
 # Available commands in the shell:
 🚀 nix run           # Open the management utilities menu
-👀 nix flake show .  # Show all the flake details  
+👀 nix flake show .  # Show all the flake details
 🔍 nix flake update  # Update the flake
 🩻 nix flake check   # Check the flake
 🆚 ./vscode          # Open VSCode ready to work on this flake
@@ -173,14 +169,13 @@ nix develop
 
 The flake includes essential development and system management tools:
 
-- **Code Editors**: VSCode with Nix extensions
-- **Version Control**: Git with full functionality
-- **UI Libraries**: Gum for beautiful terminal interfaces
-- **System Tools**: Various fetch utilities for system information
-- **Communication**: ntfy-sh for notifications
-- **Documentation**: Marp for presentations, Glow for markdown
-- **Graphics**: Mesa demos and hardware utilities
-
+* **Code Editors**: VSCode with Nix extensions
+* **Version Control**: Git with full functionality
+* **UI Libraries**: Gum for beautiful terminal interfaces
+* **System Tools**: Various fetch utilities for system information
+* **Communication**: ntfy-sh for notifications
+* **Documentation**: Marp for presentations, Glow for markdown
+* **Graphics**: Mesa demos and hardware utilities
 
 ## ✨ Contributing
 
@@ -196,27 +191,24 @@ We welcome contributions! Here's how you can help:
 
 ### 📝 Development Guidelines
 
-- Follow Nix best practices
-- Test all changes in the development environment
-- Update documentation for new features
-- Ensure backward compatibility when possible
-
+* Follow Nix best practices
+* Test all changes in the development environment
+* Update documentation for new features
+* Ensure backward compatibility when possible
 
 ## 🙋 Have Questions?
 
 Have questions or feedback? Feel free to open an issue or submit a Pull Request!
 
-- 🐛 **Bug Reports**: Use the issue tracker to report bugs
-- 💡 **Feature Requests**: Suggest new utilities or improvements
-- 📖 **Documentation**: Help improve our documentation
-- 💬 **Discussions**: Join the conversation about NixOS utilities
-
+* 🐛 **Bug Reports**: Use the issue tracker to report bugs
+* 💡 **Feature Requests**: Suggest new utilities or improvements
+* 📖 **Documentation**: Help improve our documentation
+* 💬 **Discussions**: Join the conversation about NixOS utilities
 
 ## 🧑‍💻👩‍💻 Contributors
 
-- [Tim Sutton](https://github.com/timlinux) – Original author and maintainer
-- [Contributors](https://github.com/timlinux/nixos-utils/graphs/contributors) – See the full list of amazing contributors who have helped make this project possible.
-
+* [Tim Sutton](https://github.com/timlinux) – Original author and maintainer
+* [Contributors](https://github.com/timlinux/nixos-utils/graphs/contributors) – See the full list of amazing contributors who have helped make this project possible.
 
 ## 📦 Adding to Your Own Flake
 
@@ -299,9 +291,6 @@ nix run github:timlinux/nixos-utils
 ```
 
 The utilities will be available system-wide and you can access all the system information tools, benchmarks, and management utilities through the beautiful terminal interface.
-
-
-
 
 ## 3. <a name='Quickstart'></a>Quickstart
 

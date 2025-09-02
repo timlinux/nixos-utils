@@ -1,7 +1,7 @@
 {
     "version": "0.2",
         "words": [
-        "Addinganewhosttothisflake",
+            "Addinganewhosttothisflake",
         "agenix",
         "Agenix",
         "Applyingtheflaketoyoursystem",
@@ -127,10 +127,19 @@
         "virtualman",
         "webapps",
         "Whatthisrepoprovides",
-        "whic) fix: (which",
         "Wifiandbrowser",
         "Wimpysworld",
         "wireframes",
-        "Workingwith"
+        "Workingwith",
+        "neofetch",
+        "cpufetch",
+        "ramfetch",
+        "ipfetch",
+        "octofetch",
+        "sysbench",
+        "ntfy",
+        "scrot",
+        "onefetch",
+        "ntfy"
             ]
 }

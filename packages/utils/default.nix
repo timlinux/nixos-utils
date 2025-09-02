@@ -1,12 +1,22 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   desktopItem = pkgs.makeDesktopItem {
     name = "nixos-utils";
     exec = "utils";
     icon = "nixos-utils";
     desktopName = "NixOS Utils";
     comment = "User-friendly interface for various NixOS management tasks";
-    categories = ["System" "Utility"];
-    keywords = ["nixos" "system" "management" "utilities" "terminal"];
+    categories = [
+      "System"
+      "Utility"
+    ];
+    keywords = [
+      "nixos"
+      "system"
+      "management"
+      "utilities"
+      "terminal"
+    ];
     terminal = true;
     startupNotify = false;
   };
@@ -31,44 +41,44 @@
     nmap
   ];
 in
-  pkgs.stdenv.mkDerivation {
-    pname = "utils";
-    version = "1.0.0";
+pkgs.stdenv.mkDerivation {
+  pname = "utils";
+  version = "1.0.0";
 
-    src = ./.;
+  src = ./.;
 
-    buildInputs = [
-      pkgs.makeWrapper
-    ];
+  buildInputs = [
+    pkgs.makeWrapper
+  ];
 
-    installPhase = ''
-      mkdir -p $out/bin
-      mkdir -p $out/share/utils
-      mkdir -p $out/share/applications
-      mkdir -p $out/share/icons/hicolor/256x256/apps
+  installPhase = ''
+    mkdir -p $out/bin
+    mkdir -p $out/share/utils
+    mkdir -p $out/share/applications
+    mkdir -p $out/share/icons/hicolor/256x256/apps
 
-      # Copy the main script
-      cp utils.sh $out/bin/utils
-      chmod +x $out/bin/utils
+    # Copy the main script
+    cp utils.sh $out/bin/utils
+    chmod +x $out/bin/utils
 
-      # Copy the img folder and its contents
-      cp -r img $out/share/utils/
+    # Copy the img folder and its contents
+    cp -r img $out/share/utils/
 
-      # Install desktop file
-      cp ${desktopItem}/share/applications/* $out/share/applications/
+    # Install desktop file
+    cp ${desktopItem}/share/applications/* $out/share/applications/
 
-      # Install icon (PNG should go in 256x256 directory, not scalable)
-      cp img/icon.png $out/share/icons/hicolor/256x256/apps/nixos-utils.png
+    # Install icon (PNG should go in 256x256 directory, not scalable)
+    cp img/icon.png $out/share/icons/hicolor/256x256/apps/nixos-utils.png
 
-      # Wrap the script with runtime dependencies
-      wrapProgram $out/bin/utils \
-        --prefix PATH : ${pkgs.lib.makeBinPath runtimeInputs} \
-        --set UTILS_SHARE_DIR $out/share/utils
-    '';
+    # Wrap the script with runtime dependencies
+    wrapProgram $out/bin/utils \
+      --prefix PATH : ${pkgs.lib.makeBinPath runtimeInputs} \
+      --set UTILS_SHARE_DIR $out/share/utils
+  '';
 
-    meta = with pkgs.lib; {
-      description = "Bash script that provides a user-friendly interface for various NixOS management tasks";
-      license = licenses.mit;
-      platforms = platforms.linux;
-    };
-  }
+  meta = with pkgs.lib; {
+    description = "Bash script that provides a user-friendly interface for various NixOS management tasks";
+    license = licenses.mit;
+    platforms = platforms.linux;
+  };
+}
