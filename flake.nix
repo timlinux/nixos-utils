@@ -49,6 +49,8 @@
               pkg:
               builtins.elem (nixpkgs.lib.getName pkg) [
                 "bearer"
+                "codeql"
+                "vscode"
               ];
           };
         in
