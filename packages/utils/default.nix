@@ -47,7 +47,7 @@ pkgs.stdenv.mkDerivation {
 
   src = ./.;
 
-  buildInputs = [
+  nativeBuildInputs = [
     pkgs.makeWrapper
   ];
 

@@ -29,7 +29,7 @@
     {
       packages.x86_64-linux = rec {
         # recursive so default alias can refer to the package name
-        nixos-utils = pkgs.callPackage ./packages/nixos-utils { };
+        nixos-utils = pkgs.callPackage ./packages/utils { };
         default = nixos-utils;
       };
 
